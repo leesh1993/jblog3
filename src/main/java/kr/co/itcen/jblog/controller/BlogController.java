@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import kr.co.itcen.jblog.service.BlogService;
 import kr.co.itcen.jblog.vo.BlogVo;
 import kr.co.itcen.jblog.vo.CategoryVo;
@@ -27,38 +30,28 @@ public class BlogController {
 						@PathVariable Optional<Integer> pathNo2, 
 						Model model) {
 		
-		/*처음 내 블로그 데이터 불러오기 */
-		//=================================================================
 		BlogVo blog = blogService.getBlog(id);
-		List<CategoryVo> categoryList  = blogService.getCategory(id);
 		model.addAttribute("blog", blog);
+
+		List<CategoryVo> categoryList  = blogService.getCategory(id);	
 		model.addAttribute("categoryList", categoryList);
 		
 		int categoryNo = categoryList.get(0).getNo();
 		int postNo = 1;
-		//=================================================================
-		
+	
 		if( pathNo2.isPresent() ) {
 			postNo = pathNo2.get();
 			categoryNo = pathNo1.get();
-			System.out.println("여기오냐");
 		} else if( pathNo1.isPresent() ){
 			categoryNo = pathNo1.get();
 		}
-	
-		System.out.println("id : " + id);
-		System.out.println("categoryNo : " + categoryNo);
-		System.out.println("postNo : " + postNo);
-		
-		
 		
 		List<PostVo> postlist  = blogService.getPostList(categoryNo);
 		model.addAttribute("postlist", postlist);
 		
 		PostVo selectedPost  = blogService.getSelectedPost(categoryNo,postNo);	
 		model.addAttribute("selectedPost", selectedPost);			
-
-		
+	
 		return "blog/blog-main";
 	}
 	
@@ -79,10 +72,25 @@ public class BlogController {
 	}
 	
 	@RequestMapping("/admin/write")
-	public String adminWrite(@PathVariable String id) {
+	public String adminWrite(@PathVariable String id,
+			                 Model model) {
 		
-		System.out.println("id : " +id);
+		List<CategoryVo> categoryList  = blogService.getCategory(id);	
+		model.addAttribute("categoryList", categoryList);
 		
 		return "blog/blog-admin-write";
+	}
+	
+	@RequestMapping(value = "/admin/postWrite", method = RequestMethod.POST )
+	public String postWrite(@PathVariable String id,
+							@RequestParam("title") String title,
+							@RequestParam("category") int category, 
+							@RequestParam("contents") String contents) {
+		
+		System.out.println("title : " + title + "  category : " + category + "  contents : " + contents);
+		
+		blogService.insert(title, category, contents);
+		
+		return "redirect:/" + id;
 	}
 }

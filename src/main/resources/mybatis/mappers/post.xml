@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="post">
 
-	<insert id="insert" parameterType="postvo">
+	<insert id="insert" parameterType="map">
 		<![CDATA[
 		insert
 		  into post
-		values(null,#{title },#{text },now(),#{cno },(SELECT IFNULL(MAX(p.pno) + 1, 1) from post p where p.cno = #{cno }))
+		values(null,#{title },#{contents },now(),#{cno },(SELECT IFNULL(MAX(p.pno) + 1, 1) from post p where p.cno = #{cno }))
 		]]>
 	</insert>
 	
@@ -21,7 +21,7 @@
 	  from post p, category c
 	 where p.cno = c.no
 	   and p.cno = #{cno }
-	order by  wdate desc
+	order by  wdate asc
 	]]>
 	</select>
 	

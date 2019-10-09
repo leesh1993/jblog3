@@ -15,6 +15,18 @@ public class PostDao {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	public boolean insert(String title, int cno, String contents){
+		HashMap<String, Object> map = new HashMap<String, Object>();	
+		
+		map.put("title", title);
+		map.put("cno", cno);
+		map.put("contents", contents);
+		
+		
+		int count = sqlSession.insert("post.insert",map);
+		return count == 1;	
+	}
+	
 	public List<PostVo> getPostList(int cno){
 	
 		return sqlSession.selectList("post.getPostList", cno);

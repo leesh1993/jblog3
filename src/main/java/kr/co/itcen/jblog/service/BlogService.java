@@ -42,4 +42,9 @@ public class BlogService {
 		return postDao.getSelectedPost(cno, pno);
 	}
 	
+	public boolean insert(String title, int cno, String contents){
+		
+		return postDao.insert(title, cno, contents);
+	}
+	
 }
