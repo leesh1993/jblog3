@@ -26,8 +26,8 @@ public class BlogController {
 						@PathVariable Optional<Integer> pathNo2, 
 						Model model) {
 			
-		int categoryNo = 0;
-		int postNo = 0;
+		int categoryNo = 1;
+		int postNo = 1;
 		
 		if( pathNo1.isPresent() ) {
 			categoryNo = pathNo1.get();

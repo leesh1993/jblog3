@@ -2,58 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="post">
 
-
-	<insert id="insert" parameterType="uservo">
+	<insert id="insert" parameterType="postvo">
 		<![CDATA[
 		insert
-		  into user
-		values (null, #{name }, #{email }, #{password }, #{gender }, now(),'USER')
+		  into post
+		values(null,#{title },#{text },now(),#{cno },(SELECT IFNULL(MAX(p.pno) + 1, 1) from post p where p.cno = #{cno }))
 		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-		<![CDATA[
-		select last_insert_id()
-		]]>	
-		</selectKey>
 	</insert>
 	
-	<select id="getByEmailAndPassword" parameterType="uservo" resultType="uservo">
-		<![CDATA[
-		select no, name, role
-		  from user
-		 where email = #{email }
-		   and password = #{password }		
-		]]>
-	</select>
-
-	<select id="getByNo" parameterType="Long" resultType="uservo">
-		<![CDATA[
-		select name, email, gender 
-		  from user 
-		 where no = #{no }	
-		]]>
-	</select>
-
-	<select id="getByEmail" parameterType="string" resultType="uservo">
-		<![CDATA[
-		select no, email 
-		  from user 
-		 where email = #{email }	
-		]]>
-	</select>
-	
-	<update id="update" parameterType="uservo">
-		<![CDATA[
-		update user 
-		   set name = #{name }
-		]]>
-	    <if test = "password != ''">
-	         , password = #{password }
-	    </if>
-		<![CDATA[
-		     , gender = #{gender } 
-		 where no = #{no }
-		]]>
-	</update>
 	
 	
 </mapper>

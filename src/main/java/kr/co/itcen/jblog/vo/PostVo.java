@@ -7,6 +7,8 @@ public class PostVo {
 	private String text;
 	private String wdate;
 	private int cno;
+	private int pno; 
+	
 	public int getNo() {
 		return no;
 	}
@@ -37,11 +39,19 @@ public class PostVo {
 	public void setCno(int cno) {
 		this.cno = cno;
 	}
-	
+	public int getPno() {
+		return pno;
+	}
+	public void setPno(int pno) {
+		this.pno = pno;
+	}
 	@Override
 	public String toString() {
-		return "PostVo [no=" + no + ", title=" + title + ", text=" + text + ", wdate=" + wdate + ", cno=" + cno + "]";
+		return "PostVo [no=" + no + ", title=" + title + ", text=" + text + ", wdate=" + wdate + ", cno=" + cno
+				+ ", pno=" + pno + "]";
 	}
+	
+
 	
 	
 }
