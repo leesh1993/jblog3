@@ -10,6 +10,35 @@
 		]]>
 	</insert>
 	
+	<select id="getPostList" parameterType="int" resultType="postvo">
+	<![CDATA[
+	select p.no
+	     , p.title
+	     , p.text
+	     , date_format(p.wdate,'%Y-%m-%d %h:%i:%s') as wdate
+	     , p.cno
+	     , p.pno
+	  from post p, category c
+	 where p.cno = c.no
+	   and p.cno = #{cno }
+	order by  wdate desc
+	]]>
+	</select>
 	
+	<select id="getSelectedPost" parameterType="map" resultType="postvo">
+	<![CDATA[
+	select p.no
+	     , p.title
+	     , p.text
+	     , date_format(p.wdate,'%Y-%m-%d %h:%i:%s') as wdate
+	     , p.cno
+	     , p.pno
+	  from post p, category c
+	 where p.cno = c.no
+	   and p.cno = #{cno }
+	   and p.pno = #{pno }
+	]]>
 	
+	</select>
+		
 </mapper>

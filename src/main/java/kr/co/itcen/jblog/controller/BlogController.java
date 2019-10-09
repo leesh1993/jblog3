@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import kr.co.itcen.jblog.service.BlogService;
 import kr.co.itcen.jblog.vo.BlogVo;
 import kr.co.itcen.jblog.vo.CategoryVo;
+import kr.co.itcen.jblog.vo.PostVo;
 
 
 @Controller
@@ -25,26 +26,38 @@ public class BlogController {
 						@PathVariable Optional<Integer> pathNo1,
 						@PathVariable Optional<Integer> pathNo2, 
 						Model model) {
-			
-		int categoryNo = 1;
-		int postNo = 1;
 		
-		if( pathNo1.isPresent() ) {
-			categoryNo = pathNo1.get();
-		} else if( pathNo2.isPresent() ){
-			categoryNo = pathNo1.get();
+		/*처음 내 블로그 데이터 불러오기 */
+		//=================================================================
+		BlogVo blog = blogService.getBlog(id);
+		List<CategoryVo> categoryList  = blogService.getCategory(id);
+		model.addAttribute("blog", blog);
+		model.addAttribute("categoryList", categoryList);
+		
+		int categoryNo = categoryList.get(0).getNo();
+		int postNo = 1;
+		//=================================================================
+		
+		if( pathNo2.isPresent() ) {
 			postNo = pathNo2.get();
+			categoryNo = pathNo1.get();
+			System.out.println("여기오냐");
+		} else if( pathNo1.isPresent() ){
+			categoryNo = pathNo1.get();
 		}
 	
 		System.out.println("id : " + id);
 		System.out.println("categoryNo : " + categoryNo);
 		System.out.println("postNo : " + postNo);
 		
-		BlogVo blog = blogService.getBlog(id);
-		List<CategoryVo> list  = blogService.getCategory(id);
 		
-		model.addAttribute("blog", blog);
-		model.addAttribute("category", list);
+		
+		List<PostVo> postlist  = blogService.getPostList(categoryNo);
+		model.addAttribute("postlist", postlist);
+		
+		PostVo selectedPost  = blogService.getSelectedPost(categoryNo,postNo);	
+		model.addAttribute("selectedPost", selectedPost);			
+
 		
 		return "blog/blog-main";
 	}

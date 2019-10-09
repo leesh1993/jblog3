@@ -16,7 +16,7 @@ public class BlogDao {
 	@Autowired
 	private SqlSession sqlSession;	
 	
-	public BlogVo getBlog(String id) throws UserDaoException {
+	public BlogVo getBlog(String id) {
 		return sqlSession.selectOne("blog.getBlog",id);
 		
 	}

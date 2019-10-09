@@ -14,7 +14,7 @@ public class CategoryDao {
 	@Autowired
 	private SqlSession sqlSession;	
 	
-	public List<CategoryVo> getCategory(String id) throws UserDaoException {
+	public List<CategoryVo> getCategory(String id) {
 		return sqlSession.selectList("category.getCategory",id);
 	}
 }
