@@ -6,6 +6,7 @@ public class CategoryVo {
 	private String explanation;
 	private String wdate;
 	private String bid;
+	private String pcount;
 	
 	public int getNo() {
 		return no;
@@ -37,11 +38,17 @@ public class CategoryVo {
 	public void setBid(String bid) {
 		this.bid = bid;
 	}
+	public String getPcount() {
+		return pcount;
+	}
+	public void setPcount(String pcount) {
+		this.pcount = pcount;
+	}
 	
 	@Override
 	public String toString() {
 		return "CategoryVo [no=" + no + ", name=" + name + ", explanation=" + explanation + ", wdate=" + wdate
-				+ ", bid=" + bid + "]";
+				+ ", bid=" + bid + ", pcount=" + pcount + "]";
 	}
-	
+
 }

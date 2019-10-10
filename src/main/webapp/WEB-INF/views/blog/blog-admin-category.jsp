@@ -8,6 +8,65 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>JBlog</title>
 <Link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
+<script src="${pageContext.servletContext.contextPath }/assets/js/jquery/jquery-1.9.0.js" type="text/javascript"></script>
+<script>
+$(function(){
+	
+	$("#category-add-btn").click(function(){
+		var name        = $("#add-name").val();
+		var explanation = $("#add-explanation").val();
+		var lastcount = 0;
+		if (name == "") {
+			return;
+		}
+		
+		// ajax 통신
+		$.ajax({
+			url: "${pageContext.servletContext.contextPath }/api/blog/add?bid=${blog.uid}&name="+name+"&explanation="+explanation,
+			type: "get",
+			dataType: "json",
+			success : function(data) { 
+				lastcount = data;
+				$("#add-categotyList").append(
+						"<tr><td>"+lastcount+"</td>"+
+						"<td>"+name+"</td>"+
+						"<td>"+0+"</td>"+
+						"<td>"+explanation+"</td>"+
+						"<td><img src='${pageContext.request.contextPath}/assets/images/delete.jpg'></td>"+
+						"</tr>");
+			},
+         	error : function(xhr, error) {
+	        	console.error("error : " + error);
+	        }
+		});
+				
+	});
+	
+	
+	
+	$(document).on("click", ".delete-category", function(event) {
+		  event.preventDefault();      
+	      
+	      var no = $(this).attr('id');
+
+	      $.ajax({
+	         url : "${pageContext.servletContext.contextPath }/api/blog/delete?no=" + no,
+	         type : "post",
+	         dataType : "json",
+	         success : function(data) {
+	            $("#rowid_" + data).remove();
+	         },
+	         error : function(xhr, error) {
+	            console.error("error : " + error);
+	         }
+	      });
+	   
+	   });
+	
+	
+});
+</script>
+
 </head>
 <body>
 	<div id="container">
@@ -27,42 +86,33 @@
 		      			<th>설명</th>
 		      			<th>삭제</th>      			
 		      		</tr>
+		      		<tbody id="add-categotyList" >
+		      		<c:forEach items='${categoryList}' var='vo' varStatus='status'>
 					<tr>
-						<td>3</td>
-						<td>미분류</td>
-						<td>10</td>
-						<td>카테고리를 지정하지 않은 경우</td>
-						<td><img src="${pageContext.request.contextPath}/assets/images/delete.jpg"></td>
+						<td>${status.count }</td>
+						<td>${vo.name}</td>
+						<td>${vo.pcount }</td>
+						<td>${vo.explanation}</td>			
+						<td><img class="delete-category" id="${vo.no }" src="${pageContext.request.contextPath}/assets/images/delete.jpg"></td>
+						<input type="hidden" id="lastcount" value="${getCount }">
 					</tr>  
-					<tr>
-						<td>2</td>
-						<td>스프링 스터디</td>
-						<td>20</td>
-						<td>어쩌구 저쩌구</td>
-						<td><img src="${pageContext.request.contextPath}/assets/images/delete.jpg"></td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td>스프링 프로젝트</td>
-						<td>15</td>
-						<td>어쩌구 저쩌구</td>
-						<td><img src="${pageContext.request.contextPath}/assets/images/delete.jpg"></td>
-					</tr>					  
+				  	</c:forEach>
+				  	</tbody>
 				</table>
       	
       			<h4 class="n-c">새로운 카테고리 추가</h4>
 		      	<table id="admin-cat-add">
 		      		<tr>
 		      			<td class="t">카테고리명</td>
-		      			<td><input type="text" name="name"></td>
+		      			<td><input id="add-name" type="text" name="name"></td>
 		      		</tr>
 		      		<tr>
 		      			<td class="t">설명</td>
-		      			<td><input type="text" name="desc"></td>
+		      			<td><input id="add-explanation" type="text" name="explanation"></td>
 		      		</tr>
 		      		<tr>
 		      			<td class="s">&nbsp;</td>
-		      			<td><input type="submit" value="카테고리 추가"></td>
+		      			<td><input id="category-add-btn" type="button" value="카테고리 추가"></td>
 		      		</tr>      		      		
 		      	</table> 
 			</div>

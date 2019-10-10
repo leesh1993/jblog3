@@ -65,14 +65,6 @@ public class BlogController {
 		BlogVo blog = blogService.getBlog(id);
 		model.addAttribute("blog", blog);
 		
-		//파일 가져오기
-		//FileUploadVo fileUploadVo = blogService.getFile(id);
-		
-		//if(fileUploadVo !=null) {
-		//	model.addAttribute("fileUploadVo", fileUploadVo);
-		//	model.addAttribute("fileO", "fileO");
-		//}
-		
 		return "blog/blog-admin-basic";
 	}
 	
@@ -102,6 +94,13 @@ public class BlogController {
 		/*블로그 정보 가져오기*/
 		BlogVo blog = blogService.getBlog(id);
 		model.addAttribute("blog", blog);
+		
+		/*카테고리 정보 가져오기*/
+		List<CategoryVo> categoryList  = blogService.getCategory(id);	
+		model.addAttribute("categoryList", categoryList);
+		
+		//int getCount = blogService.getCount(id);
+		//model.addAttribute("getCount", getCount);
 		
 		return "blog/blog-admin-category";
 	}

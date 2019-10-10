@@ -7,7 +7,7 @@
 		<![CDATA[
 		insert
 		  into blog
-		values (#{id}, CONCAT(#{name }, '님의 블로그'), '보류')
+		values (#{id}, CONCAT(#{name }, '님의 블로그'), '/images/logo/spring-logo.jpg')
 		]]>
 	</insert>
 

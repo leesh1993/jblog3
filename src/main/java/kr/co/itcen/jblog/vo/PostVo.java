@@ -8,6 +8,7 @@ public class PostVo {
 	private String wdate;
 	private int cno;
 	private int pno; 
+
 	
 	public int getNo() {
 		return no;
@@ -50,6 +51,7 @@ public class PostVo {
 		return "PostVo [no=" + no + ", title=" + title + ", text=" + text + ", wdate=" + wdate + ", cno=" + cno
 				+ ", pno=" + pno + "]";
 	}
+	
 	
 
 	

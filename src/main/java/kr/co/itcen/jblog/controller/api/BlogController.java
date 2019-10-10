@@ -16,5 +16,29 @@ public class BlogController {
 	@Autowired
 	BlogService blogService;
 	
+	@ResponseBody
+	@RequestMapping("/add")
+	public int addCategory(@RequestParam(value = "bid", required = false)String bid,
+			                    @RequestParam(value = "name", required = false)String name,
+			                    @RequestParam(value = "explanation", required = false)String explanation) {
+			
+		System.out.println("bid : "+ bid + " name : "+ name + " explanation : " + explanation);
+		blogService.addCategory(bid,name,explanation);
+		
+		int getCount = blogService.getCount(bid);
+		
+		return getCount;
+	}
 	
+	@ResponseBody
+	@RequestMapping("/delete")
+	public JSONResult deleteCategory(@RequestParam(value = "no", required = false) int no) {
+		
+		
+		System.out.println("no : " + no);
+		boolean result = blogService.deleteCategory(no);
+		
+		return JSONResult.success(result);
+
+	}
 }

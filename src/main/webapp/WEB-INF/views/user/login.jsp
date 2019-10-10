@@ -21,17 +21,11 @@
 			id="join-form"
 			method="post"
 			 action="${pageContext.servletContext.contextPath }/user/auth">
-      		<label>아이디</label> 
+      		<label>아이디</label><br>
 			<form:input path = "id"/>
 			<label class="block-label" >패스워드</label>
 			<form:password path = "password"/>
-			<c:choose>
-				<c:when test="${result eq 'fail'}">
-					<p>
-						로그인이 실패 했습니다. 
-					</p>
-				</c:when>
-			</c:choose>
+
 			<input type="submit" value="로그인">
 		</form:form>
 	</div>

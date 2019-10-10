@@ -42,10 +42,16 @@ public class BlogService {
 	public List<CategoryVo> getCategory(String id) {
 		return categoryDao.getCategory(id);
 	}
+	
+	public int getCount(String id) {
+		return categoryDao.getCount(id);
+	}
 
 	public List<PostVo> getPostList(int cno) {
 		return postDao.getPostList(cno);
 	}
+	
+
 
 	public PostVo getSelectedPost(int cno, int pno) {
 		return postDao.getSelectedPost(cno, pno);
@@ -60,7 +66,18 @@ public class BlogService {
 
 		return blogDao.blogUpdate(uid, title);
 	}
+	
+	public Boolean addCategory(String bid, String name, String explanation) {
+		
+		return categoryDao.addCategory(bid, name, explanation);
+	}
+	
+	public Boolean deleteCategory(int no) {
+	
+		return categoryDao.deleteCategory(no);
+	}
 
+	
 	public String restore(String bid, MultipartFile multipartFile) {
 
 		String url = "";
