@@ -16,7 +16,7 @@ public class UserDao {
 	public Boolean insert(UserVo vo) throws UserDaoException {
 		int count = sqlSession.insert("user.insert",vo);
 		sqlSession.insert("blog.insert",vo);
-		sqlSession.insert("category.insert",vo);
+		sqlSession.insert("category.defaultInsert",vo);
 		
 		return count == 1;	
 	}

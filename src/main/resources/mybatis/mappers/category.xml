@@ -3,11 +3,11 @@
 <mapper namespace="category">
 
 
-	<insert id="insert" parameterType="uservo">
+	<insert id="defaultInsert" parameterType="uservo">
 		<![CDATA[
 		insert
 		  into category
-		values (null, '미분류', '미분류입니다.', now(), #{id })
+		values (null, '미분류', '미분류입니다.', now(), #{id },'Y',(SELECT IFNULL(MAX(c.count) + 1, 1) from category c where c.bid = #{id }))
 		]]>
 
 	</insert>
@@ -19,9 +19,11 @@
 		     , c.explanation
 		     , date_format(c.wdate,'%Y-%m-%d %h:%i:%s') as wdate
 		     , c.bid
+		     , c.count
 		  from category c, blog b
 		 where c.bid = b.uid
 		   and b.uid = #{id }
+		   and c.status= 'Y'
 		order by  wdate asc
 		]]>
 		</select>

@@ -6,7 +6,7 @@
 		<![CDATA[
 		insert
 		  into post
-		values(null,#{title },#{contents },now(),#{cno },(SELECT IFNULL(MAX(p.pno) + 1, 1) from post p where p.cno = #{cno }))
+		values(null,#{title },#{contents },now(),#{cno },(SELECT IFNULL(MAX(p.pno) + 1, 1) from post p where p.cno = #{cno }),'Y')
 		]]>
 	</insert>
 	
@@ -19,8 +19,9 @@
 	     , p.cno
 	     , p.pno
 	  from post p, category c
-	 where p.cno = c.no
-	   and p.cno = #{cno }
+	 where p.cno  = c.no
+	   and p.cno  = #{cno }
+	   and p.status = 'Y'
 	order by  wdate asc
 	]]>
 	</select>
@@ -37,6 +38,7 @@
 	 where p.cno = c.no
 	   and p.cno = #{cno }
 	   and p.pno = #{pno }
+	   and p.status = 'Y'
 	]]>
 	
 	</select>

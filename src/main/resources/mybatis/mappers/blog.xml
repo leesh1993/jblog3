@@ -8,10 +8,10 @@
 		insert
 		  into blog
 		values (#{id}, CONCAT(#{name }, '님의 블로그'), '보류')
-		]]>	
+		]]>
 	</insert>
 
-		<select id="getBlog" parameterType="string" resultType="blogvo">
+	<select id="getBlog" parameterType="string" resultType="blogvo">
 		<![CDATA[
 		select b.uid, b.title, b.logo
 		  from blog b, user u
@@ -19,5 +19,42 @@
 		   and uid  = #{uid }	
 		]]>
 	</select>
+
+	<update id="blogUpdate" parameterType="map">
+	<![CDATA[
+	update blog 
+	   set title = #{title} 
+	 where uid = #{uid}
+	]]>
+	</update>
 	
+	<update id="logoUpdate" parameterType="map">
+	<![CDATA[
+	update blog 
+	   set logo = #{logo} 
+	 where uid = #{uid}
+	]]>
+	</update>
+		
+	<insert id="upload" parameterType="fileuploadvo">
+		<![CDATA[
+		 insert 
+		 into fileupload 
+		 values(null, #{original_name}, #{save_name}, now(), #{bid}, 'y')
+		]]>
+	</insert>
+
+	<select id="getFile" parameterType="string"
+		resultType="fileuploadvo">
+	<![CDATA[
+	 select no
+	 	  , bid
+	      , original_name
+	      , save_name
+       from fileupload 
+	  where bid = #{bid}
+	    and status = 'Y'
+	]]>
+	</select>
+
 </mapper>

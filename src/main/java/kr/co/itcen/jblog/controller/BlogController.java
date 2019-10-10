@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.itcen.jblog.service.BlogService;
 import kr.co.itcen.jblog.vo.BlogVo;
 import kr.co.itcen.jblog.vo.CategoryVo;
 import kr.co.itcen.jblog.vo.PostVo;
+import kr.co.itcen.jblog.vo.FileUploadVo;
 
 
 @Controller
@@ -32,7 +34,7 @@ public class BlogController {
 		
 		BlogVo blog = blogService.getBlog(id);
 		model.addAttribute("blog", blog);
-
+		System.out.println("blog.getLogo() : "+ blog.getLogo());
 		List<CategoryVo> categoryList  = blogService.getCategory(id);	
 		model.addAttribute("categoryList", categoryList);
 		
@@ -56,17 +58,50 @@ public class BlogController {
 	}
 	
 	@RequestMapping("/admin/basic")
-	public String adminBasic(@PathVariable String id) {
+	public String adminBasic(@PathVariable String id,
+			                 Model model) {
 		
-		System.out.println("id : " +id);
+		/*블로그 정보 가져오기*/
+		BlogVo blog = blogService.getBlog(id);
+		model.addAttribute("blog", blog);
+		
+		//파일 가져오기
+		//FileUploadVo fileUploadVo = blogService.getFile(id);
+		
+		//if(fileUploadVo !=null) {
+		//	model.addAttribute("fileUploadVo", fileUploadVo);
+		//	model.addAttribute("fileO", "fileO");
+		//}
 		
 		return "blog/blog-admin-basic";
 	}
 	
-	@RequestMapping("/admin/category")
-	public String adminCategory(@PathVariable String id) {
+	@RequestMapping(value = "/admin/basic/changedBlog", method = RequestMethod.POST)
+	public String changedBlog(@PathVariable String id,
+							  @RequestParam("title") String title,
+							  @RequestParam(value="file-logo",required=false) MultipartFile multipartFile,
+			                  Model model) {
 		
-		System.out.println("id : " +id);
+
+		blogService.blogUpdate(id, title);
+
+		if(multipartFile != null) {
+			String url = blogService.restore(id, multipartFile);
+			System.out.println("url : " + url);
+		}else {
+			System.out.println("null");
+		}
+		
+		return "redirect:/" + id + "/admin/basic";
+	}
+	
+	@RequestMapping("/admin/category")
+	public String adminCategory(@PathVariable String id,
+			                    Model model) {
+		
+		/*블로그 정보 가져오기*/
+		BlogVo blog = blogService.getBlog(id);
+		model.addAttribute("blog", blog);
 		
 		return "blog/blog-admin-category";
 	}
@@ -74,6 +109,10 @@ public class BlogController {
 	@RequestMapping("/admin/write")
 	public String adminWrite(@PathVariable String id,
 			                 Model model) {
+		
+		/*블로그 정보 가져오기*/
+		BlogVo blog = blogService.getBlog(id);
+		model.addAttribute("blog", blog);
 		
 		List<CategoryVo> categoryList  = blogService.getCategory(id);	
 		model.addAttribute("categoryList", categoryList);
@@ -86,9 +125,7 @@ public class BlogController {
 							@RequestParam("title") String title,
 							@RequestParam("category") int category, 
 							@RequestParam("contents") String contents) {
-		
-		System.out.println("title : " + title + "  category : " + category + "  contents : " + contents);
-		
+	
 		blogService.insert(title, category, contents);
 		
 		return "redirect:/" + id;
