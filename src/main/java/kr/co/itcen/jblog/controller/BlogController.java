@@ -79,12 +79,14 @@ public class BlogController {
 			                 Model model) {
 		
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		
-		if(authUser != null) {
+
+		if(authUser != null) {		
 			if(!id.equals(authUser.getId())) {
 				return "redirect:/" + id;
 			}
 			model.addAttribute("user", "main");
+		}else {
+			return "redirect:/" + id;
 		}
 		
 		
@@ -104,11 +106,13 @@ public class BlogController {
 		
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		
-		if(authUser != null) {
+		if(authUser != null) {		
 			if(!id.equals(authUser.getId())) {
 				return "redirect:/" + id;
 			}
 			model.addAttribute("user", "main");
+		}else {
+			return "redirect:/" + id;
 		}
 		
 
@@ -131,11 +135,13 @@ public class BlogController {
 		
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		
-		if(authUser != null) {
+		if(authUser != null) {		
 			if(!id.equals(authUser.getId())) {
 				return "redirect:/" + id;
 			}
 			model.addAttribute("user", "main");
+		}else {
+			return "redirect:/" + id;
 		}
 		
 		/*블로그 정보 가져오기*/
@@ -156,11 +162,13 @@ public class BlogController {
 		
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		
-		if(authUser != null) {
+		if(authUser != null) {		
 			if(!id.equals(authUser.getId())) {
 				return "redirect:/" + id;
 			}
 			model.addAttribute("user", "main");
+		}else {
+			return "redirect:/" + id;
 		}
 		
 		/*블로그 정보 가져오기*/
