@@ -36,23 +36,26 @@ public class BlogController {
 		model.addAttribute("blog", blog);
 		System.out.println("blog.getLogo() : "+ blog.getLogo());
 		List<CategoryVo> categoryList  = blogService.getCategory(id);	
-		model.addAttribute("categoryList", categoryList);
 		
-		int categoryNo = categoryList.get(0).getNo();
-		int postNo = 1;
-	
-		if( pathNo2.isPresent() ) {
-			postNo = pathNo2.get();
-			categoryNo = pathNo1.get();
-		} else if( pathNo1.isPresent() ){
-			categoryNo = pathNo1.get();
+		if(categoryList.size() != 0) {
+			model.addAttribute("categoryList", categoryList);
+			int categoryNo = categoryList.get(0).getNo();
+			int postNo = 1;
+			
+			if( pathNo2.isPresent() ) {
+				postNo = pathNo2.get();
+				categoryNo = pathNo1.get();
+			} else if( pathNo1.isPresent() ){
+				categoryNo = pathNo1.get();
+			}
+			
+			List<PostVo> postlist  = blogService.getPostList(categoryNo);
+			model.addAttribute("postlist", postlist);
+			
+			PostVo selectedPost  = blogService.getSelectedPost(categoryNo,postNo);	
+			model.addAttribute("selectedPost", selectedPost);	
 		}
 		
-		List<PostVo> postlist  = blogService.getPostList(categoryNo);
-		model.addAttribute("postlist", postlist);
-		
-		PostVo selectedPost  = blogService.getSelectedPost(categoryNo,postNo);	
-		model.addAttribute("selectedPost", selectedPost);			
 	
 		return "blog/blog-main";
 	}
