@@ -26,15 +26,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		vo.setPassword(password);
 		
 		UserVo authUser = userService.getUser(vo);
-		String url = "";
-		
+
 		if(authUser == null) {
-			url = "/user/login?result=fail";
-			System.out.println("여기로 오냐");
-			response.sendRedirect(request.getContextPath() + url);
+
+			response.sendRedirect(request.getContextPath() + "/user/login?result=fail");
 			return false;
 		}
-		url = null;
+
 		//session 처리
 		HttpSession session = request.getSession(true);
 		session.setAttribute("authUser", authUser);
