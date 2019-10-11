@@ -92,11 +92,7 @@ public class BlogService {
 		String originalFilename = multipartFile.getOriginalFilename();
 		String saveFileName = generateSaveFilename(originalFilename.substring(originalFilename.lastIndexOf('.') + 1));
 		long fileSize = multipartFile.getSize();
-
-		System.out.println("###############" + originalFilename);
-		System.out.println("###############" + saveFileName);
-		System.out.println("###############" + fileSize);
-
+		
 		byte[] fileData;
 		try {
 			fileData = multipartFile.getBytes();

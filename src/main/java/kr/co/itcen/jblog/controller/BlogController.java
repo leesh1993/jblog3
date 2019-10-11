@@ -80,14 +80,14 @@ public class BlogController {
 
 		blogService.blogUpdate(id, title);
 
-		if(multipartFile != null) {
-			String url = blogService.restore(id, multipartFile);
-			System.out.println("url : " + url);
+		if(multipartFile.getOriginalFilename().lastIndexOf('.') != -1) {
+			blogService.restore(id, multipartFile);
+
 		}else {
 			System.out.println("null");
 		}
 		
-		return "redirect:/" + id + "/admin/basic";
+		return "redirect:/" + id;
 	}
 	
 	@RequestMapping("/admin/category")
@@ -101,10 +101,7 @@ public class BlogController {
 		/*카테고리 정보 가져오기*/
 		List<CategoryVo> categoryList  = blogService.getCategory(id);	
 		model.addAttribute("categoryList", categoryList);
-		
-		//int getCount = blogService.getCount(id);
-		//model.addAttribute("getCount", getCount);
-		
+
 		return "blog/blog-admin-category";
 	}
 	

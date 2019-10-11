@@ -12,7 +12,7 @@ public class UserService {
 	@Autowired //주입
 	private UserDao userDao;
 
-	public void join(UserVo vo) {
+	public void join(UserVo vo){
 		userDao.insert(vo);		
 	}
 
