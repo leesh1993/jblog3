@@ -7,6 +7,21 @@
 <!doctype html>
 <html>
 <head>
+<script src="${pageContext.servletContext.contextPath }/assets/js/jquery/jquery-1.9.0.js" type="text/javascript"></script>
+<script>
+
+
+$(function(){
+	
+	var result = "${param.result}";
+	
+	if('fail' == result ){			
+		alert("로그인에 실패했습니다.");
+	}
+	
+});
+</script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>JBlog</title>
 <Link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/jblog.css">
@@ -25,8 +40,8 @@
 			<form:input path = "id"/>
 			<label class="block-label" >패스워드</label>
 			<form:password path = "password"/>
-
-			<input type="submit" value="로그인">
+			
+			<input id="login-btn" type="submit" value="로그인">
 		</form:form>
 	</div>
 </body>
