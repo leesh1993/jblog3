@@ -60,14 +60,14 @@ $(function(){
 		  var con_test = confirm("정말 삭제하시겠습니까?");
 		  if(con_test == true){
 			  var no = $(this).attr('id');
-		      let imgObj = $(this);
+		      let clikedRow = $(this);
 		      
 		      $.ajax({
 		         url : "${pageContext.servletContext.contextPath }/api/blog/delete?no=" + no,
 		         type : "post",
 		         dataType : "json",
 		         success : function(data) {
-		         	$(imgObj).parent().parent().remove();
+		         	$(clikedRow).parent().parent().remove();
 		         },
 		         error : function(xhr, error) {
 		            console.error("error : " + error);
