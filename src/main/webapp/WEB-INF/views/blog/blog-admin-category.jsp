@@ -34,9 +34,10 @@ $(function(){
 			contentType: 'application/json',
 			data: JSON.stringify(categoryVo),
 			success : function(data) { 
-				var vo = JSON.parse(data);				
-				$("#add-categotyList").append(
-						"<tr><td>"+vo.ccount+"</td>"+
+				var vo = JSON.parse(data);	
+				$(".add-categoryList").append(
+						"<tr id='list_" + vo.no + "'>" +
+						"<td>"+vo.ccount+"</td>"+
 						"<td>"+vo.name+"</td>"+
 						"<td>"+vo.pcount+"</td>"+
 						"<td>"+vo.explanation+"</td>"+
@@ -55,21 +56,29 @@ $(function(){
 	
 	$(document).on("click", ".delete-category", function(event) {
 		  event.preventDefault();      
-	  
-	      var no = $(this).attr('id');
+			
+		  var con_test = confirm("정말 삭제하시겠습니까?");
+		  if(con_test == true){
+			  var no = $(this).attr('id');
+		      let imgObj = $(this);
+		      
+		      $.ajax({
+		         url : "${pageContext.servletContext.contextPath }/api/blog/delete?no=" + no,
+		         type : "post",
+		         dataType : "json",
+		         success : function(data) {
+		         	$(imgObj).parent().parent().remove();
+		         },
+		         error : function(xhr, error) {
+		            console.error("error : " + error);
+		         }
+		      });
+		  }
+		  else if(con_test == false){
+		    return;
+		  }
 		  
-	      $.ajax({
-	         url : "${pageContext.servletContext.contextPath }/api/blog/delete?no=" + no,
-	         type : "post",
-	         dataType : "json",
-	         success : function(data) {
-	        	
-	        	 $(".add-categotyList tr").remove("list" + data);
-	         },
-	         error : function(xhr, error) {
-	            console.error("error : " + error);
-	         }
-	      });
+	     
 	   
 	   });
 	
@@ -96,9 +105,9 @@ $(function(){
 		      			<th>설명</th>
 		      			<th>삭제</th>      			
 		      		</tr>
-		      		<tbody id="add-categotyList" >
+		      		<tbody class="add-categoryList" >
 		      		<c:forEach items='${categoryList}' var='vo' varStatus='status'>
-					<tr id = "list${status.count}">
+					<tr id = "list_${vo.no}">
 						<td>${status.count }</td>
 						<td>${vo.name}</td>
 						<td>${vo.pcount }</td>
