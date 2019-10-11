@@ -3,6 +3,8 @@ package kr.co.itcen.jblog.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +18,8 @@ import kr.co.itcen.jblog.service.BlogService;
 import kr.co.itcen.jblog.vo.BlogVo;
 import kr.co.itcen.jblog.vo.CategoryVo;
 import kr.co.itcen.jblog.vo.PostVo;
-import kr.co.itcen.jblog.vo.FileUploadVo;
+import kr.co.itcen.jblog.vo.UserVo;
+
 
 
 @Controller
@@ -30,11 +33,20 @@ public class BlogController {
 	public String index(@PathVariable String id,
 						@PathVariable Optional<Integer> pathNo1,
 						@PathVariable Optional<Integer> pathNo2, 
+						HttpSession session,
 						Model model) {
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		
+		if(authUser != null) {
+			if(id.equals(authUser.getId())) {
+				model.addAttribute("user", "user");
+			}		
+		}
+		model.addAttribute("admin", "main");
 		
 		BlogVo blog = blogService.getBlog(id);
 		model.addAttribute("blog", blog);
-		System.out.println("blog.getLogo() : "+ blog.getLogo());
 		List<CategoryVo> categoryList  = blogService.getCategory(id);	
 		
 		if(categoryList.size() != 0) {
@@ -60,9 +72,21 @@ public class BlogController {
 		return "blog/blog-main";
 	}
 	
+	
 	@RequestMapping("/admin/basic")
 	public String adminBasic(@PathVariable String id,
+					         HttpSession session,
 			                 Model model) {
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		
+		if(authUser != null) {
+			if(!id.equals(authUser.getId())) {
+				return "redirect:/" + id;
+			}
+			model.addAttribute("user", "main");
+		}
+		
 		
 		/*블로그 정보 가져오기*/
 		BlogVo blog = blogService.getBlog(id);
@@ -75,7 +99,17 @@ public class BlogController {
 	public String changedBlog(@PathVariable String id,
 							  @RequestParam("title") String title,
 							  @RequestParam(value="file-logo",required=false) MultipartFile multipartFile,
+							  HttpSession session,
 			                  Model model) {
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		
+		if(authUser != null) {
+			if(!id.equals(authUser.getId())) {
+				return "redirect:/" + id;
+			}
+			model.addAttribute("user", "main");
+		}
 		
 
 		blogService.blogUpdate(id, title);
@@ -92,7 +126,17 @@ public class BlogController {
 	
 	@RequestMapping("/admin/category")
 	public String adminCategory(@PathVariable String id,
+							    HttpSession session,
 			                    Model model) {
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		
+		if(authUser != null) {
+			if(!id.equals(authUser.getId())) {
+				return "redirect:/" + id;
+			}
+			model.addAttribute("user", "main");
+		}
 		
 		/*블로그 정보 가져오기*/
 		BlogVo blog = blogService.getBlog(id);
@@ -107,7 +151,17 @@ public class BlogController {
 	
 	@RequestMapping("/admin/write")
 	public String adminWrite(@PathVariable String id,
+							 HttpSession session,
 			                 Model model) {
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		
+		if(authUser != null) {
+			if(!id.equals(authUser.getId())) {
+				return "redirect:/" + id;
+			}
+			model.addAttribute("user", "main");
+		}
 		
 		/*블로그 정보 가져오기*/
 		BlogVo blog = blogService.getBlog(id);
@@ -121,10 +175,21 @@ public class BlogController {
 	
 	@RequestMapping(value = "/admin/postWrite", method = RequestMethod.POST )
 	public String postWrite(@PathVariable String id,
+							HttpSession session,
 							@RequestParam("title") String title,
 							@RequestParam("category") int category, 
 							@RequestParam("contents") String contents) {
 	
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		
+		if(authUser != null) {
+			if(!id.equals(authUser.getId())) {
+				return "redirect:/" + id;
+			}
+		}
+		
+		
 		blogService.insert(title, category, contents);
 		
 		return "redirect:/" + id;

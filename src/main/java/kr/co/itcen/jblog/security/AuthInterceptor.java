@@ -18,6 +18,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		Object handler)
 		throws Exception {
 		
+		
 		//1. handler 종류(DefaultServletHttpRequestHandler, HandlerMethod) 
 		if( handler instanceof HandlerMethod == false ) {
 			return true;
@@ -31,6 +32,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 	
 		//4. @Auth가 없으면 class type에 있을 수 있으므로...
 		if(auth == null) {
+			
 			auth = handlerMethod.getMethod().getDeclaringClass().getAnnotation(Auth.class);
 			
 			if(auth == null) {		
@@ -46,26 +48,24 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			response.sendRedirect(request.getContextPath()+ "/user/login");
 			return false;
 		}
-		
-
-		
+			
 		//6. Method의 @Auth의 Role 가져오기
-		String role = auth.role().toString();
+		//String role = auth.role().toString();
 
 		//7. 메소드의 @Auth의 Role이 "USER"인 경우.
 		//   인증만 되어 있으면 모두 통과
-		if("USER".equals(role)) {
-			return true;
-		}
+		//if("USER".equals(role)) {
+		//	return true;
+		//}
 		
 		//8. 메소드의 @Auth의 Role이 "ADMIN"인 경우
 		// -- 과제
-		if("ADMIN".equals(role)) {
-			UserVo authUser = (UserVo)session.getAttribute("authUser");
-			if("ADMIN".equals(authUser.getRole())){
-				return true;
-			}
-		}
+		//if("ADMIN".equals(role)) {
+		//	UserVo authUser = (UserVo)session.getAttribute("authUser");
+		//	if("ADMIN".equals(authUser.getRole())){
+		//		return true;
+		//	}
+		//}
 		
 		response.sendRedirect(request.getContextPath());
 		return false;

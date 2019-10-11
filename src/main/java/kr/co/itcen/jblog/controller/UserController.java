@@ -1,6 +1,5 @@
 package kr.co.itcen.jblog.controller;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import kr.co.itcen.jblog.security.Auth;
-import kr.co.itcen.jblog.security.AuthUser;
-import kr.co.itcen.jblog.security.Role;
 import kr.co.itcen.jblog.service.UserService;
 import kr.co.itcen.jblog.vo.UserVo;
 

@@ -19,9 +19,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping("/checkid")
 	public JSONResult checkEmail(@RequestParam(value = "id", required = true, defaultValue = "")String id) {
-		Boolean exist = userService.existUser(id);
-
-		
+		Boolean exist = userService.existUser(id);	
 		return JSONResult.success(exist);
 	}
 }
