@@ -38,9 +38,9 @@ $(function(){
 				$("#add-categotyList").append(
 						"<tr><td>"+vo.ccount+"</td>"+
 						"<td>"+vo.name+"</td>"+
-						"<td>"+0+"</td>"+
+						"<td>"+vo.pcount+"</td>"+
 						"<td>"+vo.explanation+"</td>"+
-						"<td><img src='${pageContext.request.contextPath}/assets/images/delete.jpg'></td>"+
+						"<td><img class='delete-category' id='" + vo.no + "' src='${pageContext.request.contextPath}/assets/images/delete.jpg'></td>" +
 						"</tr>");
 			},
          	error : function(xhr, error) {
@@ -63,8 +63,8 @@ $(function(){
 	         type : "post",
 	         dataType : "json",
 	         success : function(data) {
-	        	 alert(data);
-	            $("list" + data).remove();
+	        	
+	        	 $(".add-categotyList tr").remove("list" + data);
 	         },
 	         error : function(xhr, error) {
 	            console.error("error : " + error);
@@ -98,13 +98,12 @@ $(function(){
 		      		</tr>
 		      		<tbody id="add-categotyList" >
 		      		<c:forEach items='${categoryList}' var='vo' varStatus='status'>
-					<tr class="list${status.count}">
+					<tr id = "list${status.count}">
 						<td>${status.count }</td>
 						<td>${vo.name}</td>
 						<td>${vo.pcount }</td>
 						<td>${vo.explanation}</td>			
 						<td><img class="delete-category" id="${vo.no }" src="${pageContext.request.contextPath}/assets/images/delete.jpg"></td>
-						<input type="hidden" id="lastcount" value="${getCount }">
 					</tr>  
 				  	</c:forEach>
 				  	</tbody>
