@@ -43,6 +43,10 @@ public class BlogService {
 		return categoryDao.getCategory(id);
 	}
 	
+	public CategoryVo getLastCategory(String id) {
+		return categoryDao.getLastCategory(id);
+	}
+	
 	public int getCount(String id) {
 		return categoryDao.getCount(id);
 	}
@@ -51,7 +55,6 @@ public class BlogService {
 		return postDao.getPostList(cno);
 	}
 	
-
 
 	public PostVo getSelectedPost(int cno, int pno) {
 		return postDao.getSelectedPost(cno, pno);

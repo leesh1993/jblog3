@@ -37,6 +37,30 @@
 		]]>
 	</select>
 	
+	<select id="getLastCategory" parameterType="string" resultType="categoryvo">
+		<![CDATA[
+		select c.no
+				 , c.name
+				 , c.explanation
+				 , date_format(c.wdate,'%Y-%m-%d %h:%i:%s') as wdate
+				 , c.bid
+				 , (select count(*)
+					  from post p
+					 where p.cno = c.no) as pcount
+				 , (select count(*)
+					  from category c, blog b
+					 where c.bid = b.uid
+					   and b.uid = #{id}
+					   and c.status= 'Y') as ccount
+			  from category c, blog b
+			 where c.bid = b.uid
+			   and b.uid = #{id}
+			   and c.status= 'Y'
+			order by  wdate desc
+		    limit 0,1
+		]]>
+	</select>
+	
 	<select id="getCount" parameterType="string" resultType="int">
 		<![CDATA[
 		select count(*)

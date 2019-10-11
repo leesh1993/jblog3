@@ -6,7 +6,8 @@ public class CategoryVo {
 	private String explanation;
 	private String wdate;
 	private String bid;
-	private String pcount;
+	private String pcount; // 해당 카테고리의 포스트 수
+	private String ccount; // 전체 카테고리 수(카테고리 add할 때 가져옴) 
 	
 	public int getNo() {
 		return no;
@@ -44,11 +45,17 @@ public class CategoryVo {
 	public void setPcount(String pcount) {
 		this.pcount = pcount;
 	}
+	public String getCcount() {
+		return ccount;
+	}
+	public void setCcount(String ccount) {
+		this.ccount = ccount;
+	}
 	
 	@Override
 	public String toString() {
 		return "CategoryVo [no=" + no + ", name=" + name + ", explanation=" + explanation + ", wdate=" + wdate
-				+ ", bid=" + bid + ", pcount=" + pcount + "]";
-	}
+				+ ", bid=" + bid + ", pcount=" + pcount + ", ccount=" + ccount + "]";
+	}	
 
 }

@@ -2,12 +2,17 @@ package kr.co.itcen.jblog.controller.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kr.co.itcen.jblog.dto.JSONResult;
 import kr.co.itcen.jblog.service.BlogService;
+import kr.co.itcen.jblog.vo.CategoryVo;
 
 @Controller("blogApiController")
 @RequestMapping("/api/blog")
@@ -17,17 +22,20 @@ public class BlogController {
 	BlogService blogService;
 	
 	@ResponseBody
-	@RequestMapping("/add")
-	public int addCategory(@RequestParam(value = "bid", required = false)String bid,
-			                    @RequestParam(value = "name", required = false)String name,
-			                    @RequestParam(value = "explanation", required = false)String explanation) {
-			
-		System.out.println("bid : "+ bid + " name : "+ name + " explanation : " + explanation);
-		blogService.addCategory(bid,name,explanation);
+	@RequestMapping("/category/add")
+	public String addCategory(@RequestBody CategoryVo categoryVo) {
 		
-		int getCount = blogService.getCount(bid);
+		blogService.addCategory(categoryVo.getBid(),categoryVo.getName(),categoryVo.getExplanation());
+		CategoryVo vo = blogService.getLastCategory(categoryVo.getBid());
 		
-		return getCount;
+		String str = "";
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+        	str = mapper.writeValueAsString(vo);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return str;
 	}
 	
 	@ResponseBody

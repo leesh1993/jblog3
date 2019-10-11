@@ -20,6 +20,10 @@ public class CategoryDao {
 		return sqlSession.selectList("category.getCategory",id);
 	}
 	
+	public CategoryVo getLastCategory(String id) {
+		return sqlSession.selectOne("category.getLastCategory",id);
+	}
+	
 	public int getCount(String id) {
 		return sqlSession.selectOne("category.getCount",id);
 	}

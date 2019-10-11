@@ -13,31 +13,40 @@
 $(function(){
 	
 	$("#category-add-btn").click(function(){
-		var name        = $("#add-name").val();
-		var explanation = $("#add-explanation").val();
-		var lastcount = 0;
-		if (name == "") {
+		
+		var categoryVo = {
+				"name" : $("#add-name").val(),
+				"explanation" : $("#add-explanation").val(),
+				"bid" : $("#add-bid").val()
+		};
+		
+		if(categoryVo == ''){
+			alert("카테고리 항목을 모두 입력해주세요.");
 			return;
 		}
 		
+		
 		// ajax 통신
 		$.ajax({
-			url: "${pageContext.servletContext.contextPath }/api/blog/add?bid=${blog.uid}&name="+name+"&explanation="+explanation,
-			type: "get",
-			dataType: "json",
+			url: "${pageContext.servletContext.contextPath }/api/blog/category/add",
+			type: "post",
+			dataType: "json",	
+			contentType: 'application/json',
+			data: JSON.stringify(categoryVo),
 			success : function(data) { 
-				lastcount = data;
+				var vo = JSON.parse(data);				
 				$("#add-categotyList").append(
-						"<tr><td>"+lastcount+"</td>"+
-						"<td>"+name+"</td>"+
+						"<tr><td>"+vo.ccount+"</td>"+
+						"<td>"+vo.name+"</td>"+
 						"<td>"+0+"</td>"+
-						"<td>"+explanation+"</td>"+
+						"<td>"+vo.explanation+"</td>"+
 						"<td><img src='${pageContext.request.contextPath}/assets/images/delete.jpg'></td>"+
 						"</tr>");
 			},
          	error : function(xhr, error) {
 	        	console.error("error : " + error);
 	        }
+
 		});
 				
 	});
@@ -46,15 +55,16 @@ $(function(){
 	
 	$(document).on("click", ".delete-category", function(event) {
 		  event.preventDefault();      
-	      
+	  
 	      var no = $(this).attr('id');
-
+		  
 	      $.ajax({
 	         url : "${pageContext.servletContext.contextPath }/api/blog/delete?no=" + no,
 	         type : "post",
 	         dataType : "json",
 	         success : function(data) {
-	            $("#rowid_" + data).remove();
+	        	 alert(data);
+	            $("list" + data).remove();
 	         },
 	         error : function(xhr, error) {
 	            console.error("error : " + error);
@@ -88,7 +98,7 @@ $(function(){
 		      		</tr>
 		      		<tbody id="add-categotyList" >
 		      		<c:forEach items='${categoryList}' var='vo' varStatus='status'>
-					<tr>
+					<tr class="list${status.count}">
 						<td>${status.count }</td>
 						<td>${vo.name}</td>
 						<td>${vo.pcount }</td>
@@ -102,6 +112,7 @@ $(function(){
       	
       			<h4 class="n-c">새로운 카테고리 추가</h4>
 		      	<table id="admin-cat-add">
+		      	<input type="hidden" id="add-bid" value="${blog.uid }">
 		      		<tr>
 		      			<td class="t">카테고리명</td>
 		      			<td><input id="add-name" type="text" name="name"></td>
